@@ -1,21 +1,44 @@
-import React, {useState} from "react";
+import React from "react";
 import { useForm } from 'react-hook-form';
 
-function DetailsView(props) {
-  const { register, handleSubmit, reset } = useForm();
-  const onSubmit = textValue => props.item.id ? setText(textValue) : props.add(text);
-  const [text, setText] = useState('');
+function DetailsView({item, add, update, resetSelectedItem}) {
+  const { register, handleSubmit, setValue } = useForm();
+  const onSubmit = (textValue) => {
+    if (item.id) {
+      const updatedItem = Object.assign( item, textValue )
+      console.log('form:', updatedItem);
+      update(updatedItem);
+    } else {
+      add(textValue);
+    }
+  }
+
+  if (item?.id) {
+    setValue('object', item);
+  }
 
   return (
     <div className="details-container">
-      <h2 className="ml-5">Select a Computer</h2>
+      <h2 className="ml-5">Select a Item</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        <input type="text" placeholder="Title" name="First name" ref={register({required: true, maxLength: 80})} defaultValue={props.item.name} />
-        <input type="text" placeholder="Details" name="Last name" ref={register({required: true, maxLength: 100})} defaultValue={props.item.description} />
+        <input
+          type="text"
+          placeholder="Title"
+          name="name"
+          ref={register({ required: true, maxLength: 80 })}
+          defaultValue={item.name}
+        />
+        <input
+          type="text"
+          placeholder="Details"
+          name="description"
+          ref={register({ required: true, maxLength: 100 })}
+          defaultValue={item.description}
+        />
         <div>
-            <button onClick={() => props.add(text)}>{props.item.id ? 'Update' : 'Create'}</button>
-            <button type="reset" onClick={() => reset()}>Cancel</button>
+          <button type="submit" onClick={() => onSubmit()}>{item.id ? 'Update': 'Create'}</button>
+          <button type="reset" onClick={() => resetSelectedItem()}>Cancel</button>
         </div>
       </form>
     </div>

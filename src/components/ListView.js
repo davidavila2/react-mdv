@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 function ListView(props) {
   return (
     <div className="list-container">
-      <h2 className="ml-5">Computers</h2>
+      <h2 className="ml-5">Items</h2>
 
       <ul>
-        {props.items.map(item => (
+        {props?.items?.map(item => (
           <li key={item.id} className="item" onClick={() => props.selectItem(item)}>
             <div className="list-item">
               <span>{item.name}</span>
