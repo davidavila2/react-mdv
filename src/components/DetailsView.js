@@ -19,7 +19,7 @@ function DetailsView({item, add, update, resetSelectedItem}) {
 
   return (
     <div className="details-container">
-      <h2 className="ml-5">Select a Item</h2>
+      <h2 className="ml-5">{item.id ? `Editing: ${item.name}` : 'Select a Item'}</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <input
@@ -37,7 +37,7 @@ function DetailsView({item, add, update, resetSelectedItem}) {
           defaultValue={item.description}
         />
         <div>
-          <button type="submit" onClick={() => onSubmit()}>{item.id ? 'Update': 'Create'}</button>
+          <button type="submit">{item.id ? 'Update': 'Create'}</button>
           <button type="reset" onClick={() => resetSelectedItem()}>Cancel</button>
         </div>
       </form>

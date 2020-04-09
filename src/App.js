@@ -7,13 +7,17 @@ import Header from "./components/Header";
 import ListView from "./components/ListView";
 import DetailsView from "./components/DetailsView";
 
+const BASEURL = 'https://server-30-x-30.herokuapp.com/items/'
+
+const getUrlWithId = id => `${BASEURL}${id}`;
+
 function App() {
   const [selectedItem, setSelectedItem] = useState({});
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     axios
-      .get('https://server-30-x-30.herokuapp.com/items')
+      .get(BASEURL)
       .then(res => {
         setItems(res.data)
       }).catch(error => {
@@ -21,21 +25,18 @@ function App() {
       });
   }, []);
 
-  const deleteItem = id => {
-    axios
-    .delete(`https://server-30-x-30.herokuapp.com/items/${id}`, selectedItem)
-    .then(res => {
-      setItems(prevItems => {
-        return prevItems.filter(item => item.id !== id);
-      });
-      console.log(res.data, 'lol')
-      }).catch(error => {
-      console.log(error)
-      }, {});
+  const deleteItem = async id => {
+    try {
+      await axios.delete(getUrlWithId(id), selectedItem);
+      setItems(prevItems => prevItems = prevItems.filter(item => item.id !== id));
+    } catch(error) {
+      console.log('ERROR from Delete Item in The Parent', error);
+    } finally {
+      resetItem();
+    }
   };
 
   const selectItem = item => {
-    console.log('selected:', item);
     setSelectedItem(item);
   };
 
@@ -43,34 +44,34 @@ function App() {
     setSelectedItem({});
   }
 
-  const updateItem = item => {
-    console.log(item, 'item from root');
-    axios
-    .patch(`https://server-30-x-30.herokuapp.com/items/${item.id}`, selectedItem)
-    .then(res => {
-      setItems(currItem => {
-        currItem = Object.assign({}, currItem);
-      });
-      console.log(res.data, 'lol')
-      }).catch(error => {
-      console.log(error)
-      }, {});
+  const updateItem = async item => {
+    try {
+      await axios.patch(getUrlWithId(item.id), selectedItem);
+      setItems(currItems => currItems = currItems.map(currItem => item.id === currItem.id ? {...item} : currItem));
+    } catch (error) {
+      console.error('ERROR from Update Item in Parent', error);
+    } finally {
+      resetItem();
+    }
   };
 
-  const addItem = text => {
-    if (!text) {
-      alert('Please fill out form', {text: 'Ok'});
+  const addItem = async item => {
+    console.log(item, 'item cosnoke')
+    if (!item) {
+      console.log('Hey yo', item.name);
+      alert('Please fill out form');
     } else {
-      setSelectedItem(text);
+      setSelectedItem(item);
+      console.log(item)
 
-      axios
-        .post('https://server-30-x-30.herokuapp.com/items', text)
-        .then(res => {
-          setItems(res?.data)
-          console.log(res.data, 'lol')
-      }).catch(error => {
-        console.log(error)
-      }, {});
+      try {
+        const newItem = (await axios.post(BASEURL, item)).data;
+        setItems((currentItems) => currentItems = [...currentItems, newItem]);
+      } catch (error) {
+        console.error('ERROR from ADD Item In Parent', error);
+      } finally {
+        resetItem();
+      }
     }
   };
 
