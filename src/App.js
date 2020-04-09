@@ -21,7 +21,7 @@ function App() {
       .then(res => {
         setItems(res.data)
       }).catch(error => {
-        console.log(error)
+        console.error(error)
       });
   }, []);
 
@@ -30,7 +30,7 @@ function App() {
       await axios.delete(getUrlWithId(id), selectedItem);
       setItems(prevItems => prevItems = prevItems.filter(item => item.id !== id));
     } catch(error) {
-      console.log('ERROR from Delete Item in The Parent', error);
+      console.error('ERROR from Delete Item in The Parent', error);
     } finally {
       resetItem();
     }
@@ -56,13 +56,10 @@ function App() {
   };
 
   const addItem = async item => {
-    console.log(item, 'item cosnoke')
     if (!item) {
-      console.log('Hey yo', item.name);
       alert('Please fill out form');
     } else {
       setSelectedItem(item);
-      console.log(item)
 
       try {
         const newItem = (await axios.post(BASEURL, item)).data;
