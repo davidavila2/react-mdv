@@ -5,8 +5,7 @@ function DetailsView({item, add, update, resetSelectedItem}) {
   const { register, handleSubmit, setValue } = useForm();
   const onSubmit = (textValue) => {
     if (item.id) {
-      const updatedItem = Object.assign( item, textValue )
-      console.log('form:', updatedItem);
+      const updatedItem = Object.assign(item, textValue);
       update(updatedItem);
     } else {
       add(textValue);

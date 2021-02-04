@@ -20,9 +20,15 @@ function ListView(props) {
                 <span>{item.description}</span>
               </div>
   
-              <button onClick={() => props.delete(item.id)}>
-                <FontAwesomeIcon icon="times" />
-              </button>
+              <div className="btn-actions">
+                <button onClick={() => props.delete(item.id)}>
+                  <FontAwesomeIcon icon="times" />
+                </button>
+
+                <button onClick={() => props.relocate(item.id)}>
+                  <FontAwesomeIcon icon="ellipsis-v" />
+                </button>
+              </div>
             </li>
           ))}
         </ul>

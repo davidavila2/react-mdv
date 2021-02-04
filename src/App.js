@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars, faUser, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faUser, faTimes, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import "./App.css";
 import Header from "./components/Header";
 import ListView from "./components/ListView";
@@ -92,5 +92,5 @@ function App() {
   );
   
 }
-library.add(faBars, faUser, faTimes);
+library.add(faBars, faUser, faTimes, faEllipsisV);
 export default App;
